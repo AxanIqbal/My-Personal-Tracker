@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:my_personal_tracker/core/utils/firebase_constants.dart';
-import 'package:my_personal_tracker/presentation/pages/Home/widgets/add_alert.dart';
-import 'package:my_personal_tracker/presentation/pages/Home/widgets/add_milestone.dart';
 
 import '../../../application/models/milestones/milestone.dart';
 import '../../../application/models/project/project.dart';
 import '../../../application/provider/providers.dart';
+import '../../../core/utils/firebase_constants.dart';
+import 'widgets/add_alert.dart';
+import 'widgets/add_milestone.dart';
 import 'widgets/milestone_tile.dart';
 
 class HomePage extends HookConsumerWidget {
@@ -16,17 +17,34 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final Map<ProjectStatus, Color> colorsTitle = {
+      ProjectStatus.OnGoing: Colors.black,
+      ProjectStatus.Complete: Colors.green,
+      ProjectStatus.Lost: Colors.red,
+    };
     final user = FirebaseAuth.instance.currentUser;
     final userProvider = ref.watch(userNotifierProvider);
+    final userNotifier = ref.read(userNotifierProvider.notifier);
+
+    useEffect(() {
+      final subs = usersProject.doc(user?.uid).snapshots().listen((event) {
+        userNotifier.upgradeUser(event.data()!);
+      });
+
+      return () => subs.cancel();
+    }, []);
 
     return Scaffold(
       appBar: AppBar(
         actions: [
-          ElevatedButton(
-            onPressed: () => FirebaseAuth.instance.signOut(),
-            child: const Text(
-              "Log Out",
-              style: TextStyle(color: Colors.redAccent),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: TextButton(
+              onPressed: () => FirebaseAuth.instance.signOut(),
+              child: const Text(
+                "Log Out",
+                style: TextStyle(color: Colors.redAccent),
+              ),
             ),
           ),
         ],
@@ -50,68 +68,89 @@ class HomePage extends HookConsumerWidget {
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: ListView(
-          children: userProvider.user.projects
+          children: userProvider.projects
               .asMap()
-              .map((projectIndex, project) => MapEntry(
-                    projectIndex,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              .map(
+                (projectIndex, project) => MapEntry(
+                  projectIndex,
+                  ExpansionTile(
+                    textColor: Colors.black,
+                    collapsedTextColor:
+                        project.remaining != 0.0 ? Colors.black : Colors.grey,
+                    trailing: IconButton(
+                      onPressed: () async {
+                        final data = await showDialog(
+                          context: context,
+                          builder: (context) => AddForm(projectParam: project),
+                        );
+                        userNotifier.updateProject(projectIndex, data);
+                        await userNotifier.toFirebase();
+                      },
+                      icon: const Icon(Icons.edit),
+                    ),
+                    title: Text(
+                      project.name,
+                      style: Theme.of(context).textTheme.headline3?.copyWith(
+                            color: colorsTitle[project.status],
+                          ),
+                    ),
+                    subtitle: Table(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              project.name,
-                              style: Theme.of(context).textTheme.headline3,
-                            ),
-                            Tooltip(
-                              message: "Total: \$ ${project.total}\n"
-                                  "Earned: \$ ${project.earned}\n"
-                                  "Remaining: \$ ${project.remaining}\n",
-                              child: const Icon(Icons.info),
-                            ),
-                          ],
-                        ),
-                        ...project.milestones
-                            .asMap()
-                            .map(
-                              (index, milestone) => MapEntry(
-                                index,
-                                MilestoneTile(
-                                  milestone: milestone,
-                                  index: projectIndex,
-                                  mIndex: index,
-                                ),
-                              ),
-                            )
-                            .values
-                            .toList(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("Add Milestone?"),
-                            IconButton(
-                              onPressed: () async {
-                                final milestone = await showDialog<Milestone>(
-                                  context: context,
-                                  builder: (context) => MilestoneDialog(
-                                    index: projectIndex,
-                                  ),
-                                );
-                                if (milestone != null) {
-                                  userProvider.addProjectMilestone(
-                                      projectIndex, milestone);
-                                  await userProvider.toFirebase();
-                                }
-                              },
-                              icon: const Icon(Icons.add),
-                            ),
-                          ],
-                        )
+                        TableRow(children: [
+                          const Text("Total"),
+                          Text(project.total.toString()),
+                        ]),
+                        TableRow(children: [
+                          const Text("Earned"),
+                          Text(project.earned.toString()),
+                        ]),
+                        TableRow(children: [
+                          const Text("Remaining"),
+                          Text(project.remaining.toString()),
+                        ]),
                       ],
                     ),
-                  ))
+                    children: [
+                      ...project.milestones
+                          .asMap()
+                          .map(
+                            (index, milestone) => MapEntry(
+                              index,
+                              MilestoneTile(
+                                milestone: milestone,
+                                index: projectIndex,
+                                mIndex: index,
+                              ),
+                            ),
+                          )
+                          .values
+                          .toList(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Add Milestone?"),
+                          IconButton(
+                            onPressed: () async {
+                              final milestone = await showDialog<Milestone>(
+                                context: context,
+                                builder: (context) => MilestoneDialog(
+                                  index: projectIndex,
+                                ),
+                              );
+                              if (milestone != null) {
+                                userNotifier.addProjectMilestone(
+                                    projectIndex, milestone);
+                                await userNotifier.toFirebase();
+                              }
+                            },
+                            icon: const Icon(Icons.add),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              )
               .values
               .toList(),
         ),

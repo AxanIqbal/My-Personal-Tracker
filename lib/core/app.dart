@@ -17,12 +17,13 @@ class MyApp extends StatelessWidget {
         next.maybeWhen(
           orElse: () {},
           data: (data) {
-            if (data == null) {
+            if (data == null &&
+                appRouter.currentPath != const LoginRoute().path) {
               return appRouter.pushAndPopUntil(
                 const LoginRoute(),
                 predicate: (route) => false,
               );
-            } else {
+            } else if (appRouter.currentPath != const HomeRoute().path) {
               return appRouter.pushAndPopUntil(
                 const HomeRoute(),
                 predicate: (route) => false,

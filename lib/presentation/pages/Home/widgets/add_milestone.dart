@@ -21,7 +21,7 @@ class MilestoneDialog extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userNotify = ref.read(userNotifierProvider);
+    final userNotify = ref.read(userNotifierProvider.notifier);
 
     return Dialog(
       child: Padding(
@@ -97,7 +97,7 @@ class MilestoneDialog extends HookConsumerWidget {
                           name: _formKey.currentState!.value["name"],
                           cash: double.parse(
                               _formKey.currentState!.value["cash"]),
-                          createdDate: DateTime.now(),
+                          createdDate: milestone?.createdDate ?? DateTime.now(),
                           uploadDate: DateTime.now(),
                           status: _formKey.currentState!.value["status"],
                         );

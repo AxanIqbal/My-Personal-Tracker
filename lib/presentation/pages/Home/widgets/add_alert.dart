@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_personal_tracker/application/models/project/project.dart';
 import 'package:my_personal_tracker/presentation/pages/Home/widgets/add_milestone.dart';
 
-class AddForm extends StatefulWidget {
-  const AddForm({Key? key}) : super(key: key);
+class AddForm extends HookConsumerWidget {
+  const AddForm({Key? key, this.projectParam}) : super(key: key);
+
+  final Project? projectParam;
+  // Project project = widget.projectParam ?? Project(
+  //   name: "",
+  //   milestones: [],
+  //   status: ProjectStatus.OnGoing,
+  // );
 
   @override
-  State<AddForm> createState() => _AddFormState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final project = useState(projectParam ??
+        Project(
+          name: "",
+          milestones: [],
+          status: ProjectStatus.OnGoing,
+        ));
 
-class _AddFormState extends State<AddForm> {
-  Project project = Project(
-    name: "",
-    milestones: [],
-    status: ProjectStatus.OnGoing,
-  );
-
-  @override
-  Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Add Project'),
       content: SingleChildScrollView(
@@ -25,20 +30,19 @@ class _AddFormState extends State<AddForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
+              initialValue: project.value.name,
               decoration: const InputDecoration(
                 label: Text("Project Name"),
               ),
               onChanged: (value) {
-                setState(() {
-                  project = project.copyWith(name: value);
-                });
+                project.value = project.value.copyWith(name: value);
               },
             ),
             const SizedBox(height: 10),
             DropdownButton(
               hint: const Text("Status"),
               isExpanded: true,
-              value: project.status,
+              value: project.value.status,
               items: ProjectStatus.values
                   .map(
                     (e) => DropdownMenuItem(
@@ -48,8 +52,7 @@ class _AddFormState extends State<AddForm> {
                   )
                   .toList(),
               onChanged: (status) {
-                project = project.copyWith(status: status!);
-                setState(() {});
+                project.value = project.value.copyWith(status: status!);
               },
             ),
             const SizedBox(height: 10),
@@ -59,7 +62,7 @@ class _AddFormState extends State<AddForm> {
                 columns: ["Name", "Cash", "Status"]
                     .map((e) => DataColumn(label: Text(e)))
                     .toList(),
-                rows: project.milestones
+                rows: project.value.milestones
                     .map(
                       (milestone) => DataRow(
                         cells: [
@@ -85,13 +88,12 @@ class _AddFormState extends State<AddForm> {
                       context: context,
                       builder: (context) => MilestoneDialog(),
                     );
-                    project = project.copyWith(
+                    project.value = project.value.copyWith(
                       milestones: [
-                        ...project.milestones,
+                        ...project.value.milestones,
                         milestone,
                       ],
                     );
-                    setState(() {});
                   },
                   icon: const Icon(Icons.add),
                 ),
@@ -102,9 +104,9 @@ class _AddFormState extends State<AddForm> {
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text('Add'),
+          child: Text(projectParam == null ? 'Add' : "Save"),
           onPressed: () {
-            Navigator.pop(context, project);
+            Navigator.pop(context, project.value);
           },
         ),
       ],
