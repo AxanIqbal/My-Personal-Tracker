@@ -11,7 +11,11 @@ class UserNotifier extends StateNotifier<User> {
   final String uid;
 
   void upgradeUser(User userUpgrade) {
-    state = userUpgrade;
+    state = userUpgrade
+      ..projects.sort(
+        (a, b) => a.remaining.compareTo(b.remaining),
+      )
+      ..projects.reversed;
   }
 
   void addProjectMilestone(int index, Milestone milestone) {

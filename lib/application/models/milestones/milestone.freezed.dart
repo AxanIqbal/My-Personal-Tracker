@@ -235,3 +235,161 @@ abstract class _Milestone implements Milestone {
   _$$_MilestoneCopyWith<_$_Milestone> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+MilestoneChart _$MilestoneChartFromJson(Map<String, dynamic> json) {
+  return _MilestoneChart.fromJson(json);
+}
+
+/// @nodoc
+mixin _$MilestoneChart {
+  DateTime get uploadDate => throw _privateConstructorUsedError;
+  List<Milestone> get milestones => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $MilestoneChartCopyWith<MilestoneChart> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MilestoneChartCopyWith<$Res> {
+  factory $MilestoneChartCopyWith(
+          MilestoneChart value, $Res Function(MilestoneChart) then) =
+      _$MilestoneChartCopyWithImpl<$Res, MilestoneChart>;
+  @useResult
+  $Res call({DateTime uploadDate, List<Milestone> milestones});
+}
+
+/// @nodoc
+class _$MilestoneChartCopyWithImpl<$Res, $Val extends MilestoneChart>
+    implements $MilestoneChartCopyWith<$Res> {
+  _$MilestoneChartCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? uploadDate = null,
+    Object? milestones = null,
+  }) {
+    return _then(_value.copyWith(
+      uploadDate: null == uploadDate
+          ? _value.uploadDate
+          : uploadDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      milestones: null == milestones
+          ? _value.milestones
+          : milestones // ignore: cast_nullable_to_non_nullable
+              as List<Milestone>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_MilestoneChartCopyWith<$Res>
+    implements $MilestoneChartCopyWith<$Res> {
+  factory _$$_MilestoneChartCopyWith(
+          _$_MilestoneChart value, $Res Function(_$_MilestoneChart) then) =
+      __$$_MilestoneChartCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({DateTime uploadDate, List<Milestone> milestones});
+}
+
+/// @nodoc
+class __$$_MilestoneChartCopyWithImpl<$Res>
+    extends _$MilestoneChartCopyWithImpl<$Res, _$_MilestoneChart>
+    implements _$$_MilestoneChartCopyWith<$Res> {
+  __$$_MilestoneChartCopyWithImpl(
+      _$_MilestoneChart _value, $Res Function(_$_MilestoneChart) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? uploadDate = null,
+    Object? milestones = null,
+  }) {
+    return _then(_$_MilestoneChart(
+      uploadDate: null == uploadDate
+          ? _value.uploadDate
+          : uploadDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      milestones: null == milestones
+          ? _value.milestones
+          : milestones // ignore: cast_nullable_to_non_nullable
+              as List<Milestone>,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+class _$_MilestoneChart implements _MilestoneChart {
+  _$_MilestoneChart({required this.uploadDate, required this.milestones});
+
+  factory _$_MilestoneChart.fromJson(Map<String, dynamic> json) =>
+      _$$_MilestoneChartFromJson(json);
+
+  @override
+  final DateTime uploadDate;
+  @override
+  final List<Milestone> milestones;
+
+  @override
+  String toString() {
+    return 'MilestoneChart(uploadDate: $uploadDate, milestones: $milestones)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_MilestoneChart &&
+            (identical(other.uploadDate, uploadDate) ||
+                other.uploadDate == uploadDate) &&
+            const DeepCollectionEquality()
+                .equals(other.milestones, milestones));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, uploadDate, const DeepCollectionEquality().hash(milestones));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_MilestoneChartCopyWith<_$_MilestoneChart> get copyWith =>
+      __$$_MilestoneChartCopyWithImpl<_$_MilestoneChart>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_MilestoneChartToJson(
+      this,
+    );
+  }
+}
+
+abstract class _MilestoneChart implements MilestoneChart {
+  factory _MilestoneChart(
+      {required final DateTime uploadDate,
+      required final List<Milestone> milestones}) = _$_MilestoneChart;
+
+  factory _MilestoneChart.fromJson(Map<String, dynamic> json) =
+      _$_MilestoneChart.fromJson;
+
+  @override
+  DateTime get uploadDate;
+  @override
+  List<Milestone> get milestones;
+  @override
+  @JsonKey(ignore: true)
+  _$$_MilestoneChartCopyWith<_$_MilestoneChart> get copyWith =>
+      throw _privateConstructorUsedError;
+}
