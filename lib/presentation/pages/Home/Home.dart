@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:my_personal_tracker/core/extensions/milestones.dart';
 
 import '../../../application/models/milestones/milestone.dart';
 import '../../../application/models/project/project.dart';
@@ -14,6 +11,7 @@ import '../../../core/utils/firebase_constants.dart';
 import '../../Themes/colors.dart';
 import 'widgets/add_alert.dart';
 import 'widgets/add_milestone.dart';
+import 'widgets/bar_chart.dart';
 import 'widgets/milestone_tile.dart';
 
 class HomePage extends HookConsumerWidget {
@@ -24,13 +22,6 @@ class HomePage extends HookConsumerWidget {
     final user = FirebaseAuth.instance.currentUser;
     final userProvider = ref.watch(userNotifierProvider);
     final userNotifier = ref.read(userNotifierProvider.notifier);
-    final dataChart = userProvider.projects
-        .expand(
-          (e) => e.milestones,
-        )
-        .toList()
-        .removeMergeDuplicate()
-        .mergeSameDayToChart();
 
     useEffect(() {
       final subs = usersProject.doc(user?.uid).snapshots().listen((event) {
@@ -79,56 +70,7 @@ class HomePage extends HookConsumerWidget {
             const SizedBox(
               height: 10,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SizedBox(
-                height: 300,
-                width: dataChart.length * 60,
-                child: BarChart(
-                  BarChartData(
-                    titlesData: FlTitlesData(
-                      topTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: false,
-                        ),
-                      ),
-                      rightTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: false,
-                        ),
-                      ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: (value, meta) => Text(
-                            DateFormat("yy/MM").format(
-                              DateTime.fromMillisecondsSinceEpoch(
-                                value.toInt(),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    barGroups: dataChart
-                        .map(
-                          (e) => BarChartGroupData(
-                            x: e.uploadDate.millisecondsSinceEpoch,
-                            barRods: e.milestones
-                                .map(
-                                  (e1) => BarChartRodData(
-                                    toY: e1.cash,
-                                    color: milestoneColors[e1.status],
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ),
-            ),
+            MyBarChart(projects: userProvider.projects),
             ...userProvider.projects
                 .asMap()
                 .map(
