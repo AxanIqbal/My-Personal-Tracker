@@ -24,6 +24,13 @@ class HomePage extends HookConsumerWidget {
     final user = FirebaseAuth.instance.currentUser;
     final userProvider = ref.watch(userNotifierProvider);
     final userNotifier = ref.read(userNotifierProvider.notifier);
+    final dataChart = userProvider.projects
+        .expand(
+          (e) => e.milestones,
+        )
+        .toList()
+        .removeMergeDuplicate()
+        .mergeSameDayToChart();
 
     useEffect(() {
       final subs = usersProject.doc(user?.uid).snapshots().listen((event) {
@@ -76,7 +83,7 @@ class HomePage extends HookConsumerWidget {
               scrollDirection: Axis.horizontal,
               child: SizedBox(
                 height: 300,
-                width: 2000,
+                width: dataChart.length * 60,
                 child: BarChart(
                   BarChartData(
                     titlesData: FlTitlesData(
@@ -103,13 +110,7 @@ class HomePage extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    barGroups: userProvider.projects
-                        .expand(
-                          (e) => e.milestones,
-                        )
-                        .toList()
-                        .removeMergeDuplicate()
-                        .mergeSameDayToChart()
+                    barGroups: dataChart
                         .map(
                           (e) => BarChartGroupData(
                             x: e.uploadDate.millisecondsSinceEpoch,
