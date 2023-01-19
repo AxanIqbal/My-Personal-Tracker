@@ -5,8 +5,8 @@ part 'project.freezed.dart';
 part 'project.g.dart';
 
 enum ProjectStatus {
-  Complete,
   OnGoing,
+  Complete,
   Lost,
 }
 

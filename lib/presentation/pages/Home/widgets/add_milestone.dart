@@ -98,7 +98,10 @@ class MilestoneDialog extends HookConsumerWidget {
                           cash: double.parse(
                               _formKey.currentState!.value["cash"]),
                           createdDate: milestone?.createdDate ?? DateTime.now(),
-                          uploadDate: DateTime.now(),
+                          uploadDate: milestone?.status ==
+                                  _formKey.currentState!.value["status"]
+                              ? milestone!.uploadDate
+                              : DateTime.now(),
                           status: _formKey.currentState!.value["status"],
                         );
 

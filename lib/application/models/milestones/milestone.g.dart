@@ -24,9 +24,9 @@ Map<String, dynamic> _$$_MilestoneToJson(_$_Milestone instance) =>
     };
 
 const _$MilestoneStatusEnumMap = {
-  MilestoneStatus.Lost: 'Lost',
   MilestoneStatus.Pending: 'Pending',
   MilestoneStatus.Complete: 'Complete',
+  MilestoneStatus.Lost: 'Lost',
 };
 
 _$_MilestoneChart _$$_MilestoneChartFromJson(Map<String, dynamic> json) =>

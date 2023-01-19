@@ -22,7 +22,7 @@ Map<String, dynamic> _$$_ProjectToJson(_$_Project instance) =>
     };
 
 const _$ProjectStatusEnumMap = {
-  ProjectStatus.Complete: 'Complete',
   ProjectStatus.OnGoing: 'OnGoing',
+  ProjectStatus.Complete: 'Complete',
   ProjectStatus.Lost: 'Lost',
 };

@@ -4,9 +4,9 @@ part 'milestone.freezed.dart';
 part 'milestone.g.dart';
 
 enum MilestoneStatus {
-  Lost,
   Pending,
   Complete,
+  Lost,
 }
 
 @freezed

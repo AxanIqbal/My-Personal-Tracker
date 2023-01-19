@@ -11,11 +11,22 @@ class UserNotifier extends StateNotifier<User> {
   final String uid;
 
   void upgradeUser(User userUpgrade) {
-    state = userUpgrade
-      ..projects.sort(
-        (a, b) => a.remaining.compareTo(b.remaining),
-      )
-      ..projects.reversed;
+    userUpgrade.projects.sort(
+      (a, b) {
+        int cmp = a.remaining.compareTo(b.remaining);
+        if (cmp != 0) return cmp;
+        return b.status.index.compareTo(a.status.index);
+      },
+    );
+
+    for (var element in userUpgrade.projects) {
+      element.milestones.sort(
+        (a, b) => a.status.index.compareTo(b.status.index),
+      );
+    }
+
+    state =
+        userUpgrade.copyWith(projects: userUpgrade.projects.reversed.toList());
   }
 
   void addProjectMilestone(int index, Milestone milestone) {
