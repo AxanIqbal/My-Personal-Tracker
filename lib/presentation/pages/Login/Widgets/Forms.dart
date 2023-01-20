@@ -1,9 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../../core/utils/snackbars.dart';
+import '../../../../core/extensions/snackbars.dart';
+import '../../../../core/utils/supabase_constant.dart';
 
 class LoginForm extends StatelessWidget {
   LoginForm({Key? key}) : super(key: key);
@@ -52,16 +53,15 @@ class LoginForm extends StatelessWidget {
                     onPressed: () async {
                       if (_formKey.currentState!.saveAndValidate()) {
                         try {
-                          await FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                            email: _formKey.currentState!.value["email"],
+                          await supabase.auth.signInWithPassword(
                             password: _formKey.currentState!.value["password"],
+                            email: _formKey.currentState!.value["email"],
                           );
-                        } on FirebaseAuthException catch (e) {
-                          MySnackbars.error(
-                            context,
-                            e.message ?? "Unknown Error",
-                          );
+                        } on AuthException catch (e) {
+                          context.showSnackbarError(e.message);
+                        } catch (e) {
+                          context
+                              .showSnackbarError("Unexpected error occurred");
                         }
                       }
                     },

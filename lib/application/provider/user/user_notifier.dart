@@ -1,12 +1,12 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_personal_tracker/application/models/user/user.dart';
 
-import '../../../core/utils/firebase_constants.dart';
 import '../../models/milestones/milestone.dart';
 import '../../models/project/project.dart';
 
 class UserNotifier extends StateNotifier<User> {
-  UserNotifier(this.uid) : super(User(projects: []));
+  UserNotifier(this.uid)
+      : super(User(projects: [], updatedAt: DateTime.now(), id: ''));
 
   final String uid;
 
@@ -37,8 +37,8 @@ class UserNotifier extends StateNotifier<User> {
     state.projects[index].milestones.remove(milestone);
   }
 
-  Future<void> toFirebase() {
-    return usersProject.doc(uid).update(state.toJson());
+  Future<void> toFirebase() async {
+    // return usersProject.doc(uid).update(state.toJson());
   }
 
   void upgradeProjectMilestone(int index, int mIndex, Milestone milestone) {

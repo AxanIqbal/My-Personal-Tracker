@@ -21,54 +21,56 @@ class MyBarChart extends StatelessWidget {
         .removeMergeDuplicate()
         .mergeSameDayToChart();
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        height: 300,
-        width: dataChart.length * 60,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: BarChart(
-            BarChartData(
-              titlesData: FlTitlesData(
-                topTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: false,
+    return Center(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          height: 300,
+          width: dataChart.length * 60 > 600 ? dataChart.length * 60 : 600,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 50.0),
+            child: BarChart(
+              BarChartData(
+                titlesData: FlTitlesData(
+                  topTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: false,
+                    ),
                   ),
-                ),
-                // rightTitles: AxisTitles(
-                //   sideTitles: SideTitles(
-                //     showTitles: false,
-                //   ),
-                // ),
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    getTitlesWidget: (value, meta) => Text(
-                      DateFormat("yy/MM").format(
-                        DateTime.fromMillisecondsSinceEpoch(
-                          value.toInt(),
+                  // rightTitles: AxisTitles(
+                  //   sideTitles: SideTitles(
+                  //     showTitles: false,
+                  //   ),
+                  // ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      getTitlesWidget: (value, meta) => Text(
+                        DateFormat("yy/MM").format(
+                          DateTime.fromMillisecondsSinceEpoch(
+                            value.toInt(),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
+                barGroups: dataChart
+                    .map(
+                      (e) => BarChartGroupData(
+                        x: e.uploadDate.millisecondsSinceEpoch,
+                        barRods: e.milestones
+                            .map(
+                              (e1) => BarChartRodData(
+                                toY: e1.cash,
+                                color: milestoneColors[e1.status],
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    )
+                    .toList(),
               ),
-              barGroups: dataChart
-                  .map(
-                    (e) => BarChartGroupData(
-                      x: e.uploadDate.millisecondsSinceEpoch,
-                      barRods: e.milestones
-                          .map(
-                            (e1) => BarChartRodData(
-                              toY: e1.cash,
-                              color: milestoneColors[e1.status],
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  )
-                  .toList(),
             ),
           ),
         ),

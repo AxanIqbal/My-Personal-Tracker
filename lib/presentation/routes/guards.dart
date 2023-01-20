@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../core/utils/supabase_constant.dart';
 import 'app_router.gr.dart';
 
 class AuthGuard extends AutoRouteGuard {
@@ -9,7 +9,7 @@ class AuthGuard extends AutoRouteGuard {
       NavigationResolver resolver, StackRouter router) async {
     // the navigation is paused until resolver.next() is called with either
     // true to resume/continue navigation or false to abort navigation
-    final user = FirebaseAuth.instance.currentUser;
+    final user = supabase.auth.currentUser;
     if (user != null) {
       resolver.next(true);
       // router.pushAndPopUntil(const HomeRoute(), predicate: (route) => false);

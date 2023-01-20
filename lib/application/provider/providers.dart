@@ -1,18 +1,28 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:my_personal_tracker/application/models/user/user.dart'
-    as my_user;
 
+import '../../core/utils/supabase_constant.dart';
+import '../models/user/user.dart';
 import 'user/user_notifier.dart';
 
-final userFirebaseStreamProvider = StreamProvider(
-  (ref) => FirebaseAuth.instance.authStateChanges(),
+final userSupabaseStreamProvider = StreamProvider(
+  (ref) => supabase.auth.onAuthStateChange,
 );
 
-final userNotifierProvider = StateNotifierProvider<UserNotifier, my_user.User>(
+final userNotifierProvider = StateNotifierProvider<UserNotifier, User>(
   (ref) => UserNotifier(
-    ref.watch(userFirebaseStreamProvider).asData?.value?.uid ?? "",
+    ref.watch(userSupabaseStreamProvider).asData?.value.session?.user.id ?? "",
   ),
+);
+
+final userSupabaseProvider = FutureProvider.autoDispose(
+  (ref) => supabase
+      .from("profiles")
+      .select("*, projects:project(*, milestones:milestone(*))")
+      .eq('id', supabase.auth.currentUser!.id)
+      .single()
+      .withConverter(
+        (data) => User.fromJson(data),
+      ),
 );
 
 // final userFirebaseProvider = StreamProvider(

@@ -10,7 +10,7 @@ extension MilestoneX on List<Milestone> {
 
     forEach((element) {
       final containData = data.indexWhere((dataElement) =>
-          element.uploadDate.compareMonth(dataElement.uploadDate) &&
+          element.updateAt.compareMonth(dataElement.updateAt) &&
           dataElement.status == element.status);
       if (containData < 0) {
         data.add(element);
@@ -21,7 +21,7 @@ extension MilestoneX on List<Milestone> {
     });
 
     data.sort(
-      (a, b) => a.uploadDate.compareTo(b.uploadDate),
+      (a, b) => a.updateAt.compareTo(b.updateAt),
     );
 
     return data;
@@ -32,12 +32,12 @@ extension MilestoneX on List<Milestone> {
 
     forEach((element) {
       final containData = data.indexWhere((dataElement) =>
-          element.uploadDate.compareMonth(dataElement.uploadDate));
+          element.updateAt.compareMonth(dataElement.uploadDate));
 
       if (containData < 0) {
         data.add(
           MilestoneChart(
-            uploadDate: element.uploadDate,
+            uploadDate: element.updateAt,
             milestones: [element],
           ),
         );

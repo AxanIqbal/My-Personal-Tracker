@@ -21,6 +21,7 @@ class AddForm extends HookConsumerWidget {
           name: "",
           milestones: [],
           status: ProjectStatus.OnGoing,
+          createdAt: DateTime.now(),
         ));
 
     return AlertDialog(
@@ -78,27 +79,28 @@ class AddForm extends HookConsumerWidget {
             const SizedBox(
               height: 10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Add Milestone?"),
-                IconButton(
-                  onPressed: () async {
-                    final milestone = await showDialog(
-                      context: context,
-                      builder: (context) => MilestoneDialog(),
-                    );
-                    project.value = project.value.copyWith(
-                      milestones: [
-                        ...project.value.milestones,
-                        milestone,
-                      ],
-                    );
-                  },
-                  icon: const Icon(Icons.add),
-                ),
-              ],
-            ),
+            if (projectParam == null)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Add Milestone?"),
+                  IconButton(
+                    onPressed: () async {
+                      final milestone = await showDialog(
+                        context: context,
+                        builder: (context) => MilestoneDialog(),
+                      );
+                      project.value = project.value.copyWith(
+                        milestones: [
+                          ...project.value.milestones,
+                          milestone,
+                        ],
+                      );
+                    },
+                    icon: const Icon(Icons.add),
+                  ),
+                ],
+              ),
           ],
         ),
       ),

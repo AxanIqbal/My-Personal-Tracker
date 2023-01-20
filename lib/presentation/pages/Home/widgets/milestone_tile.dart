@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_personal_tracker/application/models/milestones/milestone.dart';
+import 'package:my_personal_tracker/application/provider/providers.dart';
 import 'package:my_personal_tracker/presentation/pages/Home/widgets/add_milestone.dart';
 
+import '../../../../core/utils/supabase_constant.dart';
 import '../../../Themes/colors.dart';
 
-class MilestoneTile extends StatelessWidget {
+class MilestoneTile extends HookConsumerWidget {
   const MilestoneTile({
     Key? key,
     required this.milestone,
@@ -17,7 +20,7 @@ class MilestoneTile extends StatelessWidget {
   final int? mIndex;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +34,7 @@ class MilestoneTile extends StatelessWidget {
       selectedColor: milestoneColors[milestone.status],
       trailing: IconButton(
         onPressed: () async {
-          await showDialog(
+          final milestoneLocal = await showDialog<Milestone>(
             context: context,
             builder: (context) => MilestoneDialog(
               milestone: milestone,
@@ -39,6 +42,14 @@ class MilestoneTile extends StatelessWidget {
               mIndex: mIndex,
             ),
           );
+          if (milestoneLocal != null) {
+            print("$milestoneLocal the milestone edited");
+            await supabase
+                .from("milestone")
+                .update(milestoneLocal.toJson())
+                .eq("id", milestoneLocal.id);
+            ref.invalidate(userSupabaseProvider);
+          }
         },
         icon: const Icon(Icons.edit),
       ),

@@ -11,6 +11,8 @@ class User with _$User {
 
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   factory User({
+    required String id,
+    required DateTime? updatedAt,
     required List<Project> projects,
   }) = _User;
 

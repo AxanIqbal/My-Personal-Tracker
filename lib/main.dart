@@ -1,16 +1,17 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/app.dart';
-import 'firebase_options.dart';
 import 'injection.dart';
+import 'supabase_constant.dart';
 
 Future<void> main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  await Supabase.initialize(
+    url: supabaseURL,
+    anonKey: supabaseAnon,
   );
 
   configureDependencies();

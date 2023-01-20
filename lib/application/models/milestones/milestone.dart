@@ -13,11 +13,13 @@ enum MilestoneStatus {
 class Milestone with _$Milestone {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory Milestone({
+    int? id,
     required String name,
     required double cash,
-    required DateTime createdDate,
-    required DateTime uploadDate,
+    required DateTime createdAt,
+    required DateTime updateAt,
     required MilestoneStatus status,
+    int? projectId,
   }) = _Milestone;
 
   factory Milestone.fromJson(Map<String, dynamic> json) =>

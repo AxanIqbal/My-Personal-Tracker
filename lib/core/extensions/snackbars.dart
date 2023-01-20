@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class MySnackbars {
-  static error(BuildContext context, String textError) {
-    ScaffoldMessenger.of(context).showSnackBar(
+extension MySnackbars on BuildContext {
+  void showSnackbarError(String textError) {
+    ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(
         dismissDirection: DismissDirection.horizontal,
         behavior: SnackBarBehavior.floating,
@@ -15,7 +15,7 @@ class MySnackbars {
           contentPadding: EdgeInsets.zero,
           title: Text(
             "Error",
-            style: Theme.of(context)
+            style: Theme.of(this)
                 .textTheme
                 .headline6
                 ?.copyWith(color: Colors.white),
@@ -32,8 +32,8 @@ class MySnackbars {
     );
   }
 
-  static success(BuildContext context, String textSuccess) {
-    ScaffoldMessenger.of(context).showSnackBar(
+  void success(String textSuccess) {
+    ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(
         dismissDirection: DismissDirection.horizontal,
         behavior: SnackBarBehavior.floating,
@@ -51,7 +51,7 @@ class MySnackbars {
           ),
           title: Text(
             "Success",
-            style: Theme.of(context)
+            style: Theme.of(this)
                 .textTheme
                 .headline6
                 ?.copyWith(color: Colors.white),

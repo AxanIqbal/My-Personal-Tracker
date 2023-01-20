@@ -7,20 +7,24 @@ part of 'milestone.dart';
 // **************************************************************************
 
 _$_Milestone _$$_MilestoneFromJson(Map<String, dynamic> json) => _$_Milestone(
+      id: json['id'] as int?,
       name: json['name'] as String,
       cash: (json['cash'] as num).toDouble(),
-      createdDate: DateTime.parse(json['created_date'] as String),
-      uploadDate: DateTime.parse(json['upload_date'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updateAt: DateTime.parse(json['update_at'] as String),
       status: $enumDecode(_$MilestoneStatusEnumMap, json['status']),
+      projectId: json['project_id'] as int?,
     );
 
 Map<String, dynamic> _$$_MilestoneToJson(_$_Milestone instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'cash': instance.cash,
-      'created_date': instance.createdDate.toIso8601String(),
-      'upload_date': instance.uploadDate.toIso8601String(),
+      'created_at': instance.createdAt.toIso8601String(),
+      'update_at': instance.updateAt.toIso8601String(),
       'status': _$MilestoneStatusEnumMap[instance.status]!,
+      'project_id': instance.projectId,
     };
 
 const _$MilestoneStatusEnumMap = {

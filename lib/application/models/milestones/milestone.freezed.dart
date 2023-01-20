@@ -20,11 +20,13 @@ Milestone _$MilestoneFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Milestone {
+  int? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   double get cash => throw _privateConstructorUsedError;
-  DateTime get createdDate => throw _privateConstructorUsedError;
-  DateTime get uploadDate => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get updateAt => throw _privateConstructorUsedError;
   MilestoneStatus get status => throw _privateConstructorUsedError;
+  int? get projectId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,11 +40,13 @@ abstract class $MilestoneCopyWith<$Res> {
       _$MilestoneCopyWithImpl<$Res, Milestone>;
   @useResult
   $Res call(
-      {String name,
+      {int? id,
+      String name,
       double cash,
-      DateTime createdDate,
-      DateTime uploadDate,
-      MilestoneStatus status});
+      DateTime createdAt,
+      DateTime updateAt,
+      MilestoneStatus status,
+      int? projectId});
 }
 
 /// @nodoc
@@ -58,13 +62,19 @@ class _$MilestoneCopyWithImpl<$Res, $Val extends Milestone>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = null,
     Object? cash = null,
-    Object? createdDate = null,
-    Object? uploadDate = null,
+    Object? createdAt = null,
+    Object? updateAt = null,
     Object? status = null,
+    Object? projectId = freezed,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -73,18 +83,22 @@ class _$MilestoneCopyWithImpl<$Res, $Val extends Milestone>
           ? _value.cash
           : cash // ignore: cast_nullable_to_non_nullable
               as double,
-      createdDate: null == createdDate
-          ? _value.createdDate
-          : createdDate // ignore: cast_nullable_to_non_nullable
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      uploadDate: null == uploadDate
-          ? _value.uploadDate
-          : uploadDate // ignore: cast_nullable_to_non_nullable
+      updateAt: null == updateAt
+          ? _value.updateAt
+          : updateAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as MilestoneStatus,
+      projectId: freezed == projectId
+          ? _value.projectId
+          : projectId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -97,11 +111,13 @@ abstract class _$$_MilestoneCopyWith<$Res> implements $MilestoneCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String name,
+      {int? id,
+      String name,
       double cash,
-      DateTime createdDate,
-      DateTime uploadDate,
-      MilestoneStatus status});
+      DateTime createdAt,
+      DateTime updateAt,
+      MilestoneStatus status,
+      int? projectId});
 }
 
 /// @nodoc
@@ -115,13 +131,19 @@ class __$$_MilestoneCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = null,
     Object? cash = null,
-    Object? createdDate = null,
-    Object? uploadDate = null,
+    Object? createdAt = null,
+    Object? updateAt = null,
     Object? status = null,
+    Object? projectId = freezed,
   }) {
     return _then(_$_Milestone(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -130,18 +152,22 @@ class __$$_MilestoneCopyWithImpl<$Res>
           ? _value.cash
           : cash // ignore: cast_nullable_to_non_nullable
               as double,
-      createdDate: null == createdDate
-          ? _value.createdDate
-          : createdDate // ignore: cast_nullable_to_non_nullable
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      uploadDate: null == uploadDate
-          ? _value.uploadDate
-          : uploadDate // ignore: cast_nullable_to_non_nullable
+      updateAt: null == updateAt
+          ? _value.updateAt
+          : updateAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as MilestoneStatus,
+      projectId: freezed == projectId
+          ? _value.projectId
+          : projectId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -151,29 +177,35 @@ class __$$_MilestoneCopyWithImpl<$Res>
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class _$_Milestone implements _Milestone {
   const _$_Milestone(
-      {required this.name,
+      {this.id,
+      required this.name,
       required this.cash,
-      required this.createdDate,
-      required this.uploadDate,
-      required this.status});
+      required this.createdAt,
+      required this.updateAt,
+      required this.status,
+      this.projectId});
 
   factory _$_Milestone.fromJson(Map<String, dynamic> json) =>
       _$$_MilestoneFromJson(json);
 
   @override
+  final int? id;
+  @override
   final String name;
   @override
   final double cash;
   @override
-  final DateTime createdDate;
+  final DateTime createdAt;
   @override
-  final DateTime uploadDate;
+  final DateTime updateAt;
   @override
   final MilestoneStatus status;
+  @override
+  final int? projectId;
 
   @override
   String toString() {
-    return 'Milestone(name: $name, cash: $cash, createdDate: $createdDate, uploadDate: $uploadDate, status: $status)';
+    return 'Milestone(id: $id, name: $name, cash: $cash, createdAt: $createdAt, updateAt: $updateAt, status: $status, projectId: $projectId)';
   }
 
   @override
@@ -181,19 +213,22 @@ class _$_Milestone implements _Milestone {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Milestone &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.cash, cash) || other.cash == cash) &&
-            (identical(other.createdDate, createdDate) ||
-                other.createdDate == createdDate) &&
-            (identical(other.uploadDate, uploadDate) ||
-                other.uploadDate == uploadDate) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updateAt, updateAt) ||
+                other.updateAt == updateAt) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.projectId, projectId) ||
+                other.projectId == projectId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, name, cash, createdDate, uploadDate, status);
+  int get hashCode => Object.hash(
+      runtimeType, id, name, cash, createdAt, updateAt, status, projectId);
 
   @JsonKey(ignore: true)
   @override
@@ -211,25 +246,31 @@ class _$_Milestone implements _Milestone {
 
 abstract class _Milestone implements Milestone {
   const factory _Milestone(
-      {required final String name,
+      {final int? id,
+      required final String name,
       required final double cash,
-      required final DateTime createdDate,
-      required final DateTime uploadDate,
-      required final MilestoneStatus status}) = _$_Milestone;
+      required final DateTime createdAt,
+      required final DateTime updateAt,
+      required final MilestoneStatus status,
+      final int? projectId}) = _$_Milestone;
 
   factory _Milestone.fromJson(Map<String, dynamic> json) =
       _$_Milestone.fromJson;
 
   @override
+  int? get id;
+  @override
   String get name;
   @override
   double get cash;
   @override
-  DateTime get createdDate;
+  DateTime get createdAt;
   @override
-  DateTime get uploadDate;
+  DateTime get updateAt;
   @override
   MilestoneStatus get status;
+  @override
+  int? get projectId;
   @override
   @JsonKey(ignore: true)
   _$$_MilestoneCopyWith<_$_Milestone> get copyWith =>

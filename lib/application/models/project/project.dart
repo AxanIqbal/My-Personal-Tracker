@@ -16,22 +16,31 @@ class Project with _$Project {
 
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   factory Project({
+    int? id,
     required ProjectStatus status,
     required String name,
+    required DateTime createdAt,
     required List<Milestone> milestones,
   }) = _Project;
 
   factory Project.fromJson(Map<String, dynamic> json) =>
       _$ProjectFromJson(json);
 
-  double get total =>
-      milestones.map((e) => e.cash).reduce((value, element) => value + element);
+  double get total => milestones.isEmpty
+      ? 0.0
+      : milestones
+          .map((e) => e.cash)
+          .reduce((value, element) => value + element);
 
-  double get earned => milestones
-      .map((e) => e.status == MilestoneStatus.Complete ? e.cash : 0.0)
-      .reduce((value, element) => value + element);
+  double get earned => milestones.isEmpty
+      ? 0.0
+      : milestones
+          .map((e) => e.status == MilestoneStatus.Complete ? e.cash : 0.0)
+          .reduce((value, element) => value + element);
 
-  double get remaining => milestones
-      .map((e) => e.status == MilestoneStatus.Pending ? e.cash : 0.0)
-      .reduce((value, element) => value + element);
+  double get remaining => milestones.isEmpty
+      ? 0.0
+      : milestones
+          .map((e) => e.status == MilestoneStatus.Pending ? e.cash : 0.0)
+          .reduce((value, element) => value + element);
 }

@@ -13,11 +13,11 @@ class MyApp extends StatelessWidget {
     final appRouter = getIt<AppRouter>();
 
     return Consumer(builder: (context, ref, child) {
-      ref.listen(userFirebaseStreamProvider, (previous, next) {
+      ref.listen(userSupabaseStreamProvider, (previous, next) {
         next.maybeWhen(
           orElse: () {},
           data: (data) {
-            if (data == null &&
+            if (data.session == null &&
                 appRouter.currentPath != const LoginRoute().path) {
               return appRouter.pushAndPopUntil(
                 const LoginRoute(),

@@ -20,6 +20,8 @@ User _$UserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$User {
+  String get id => throw _privateConstructorUsedError;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
   List<Project> get projects => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -32,7 +34,7 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call({List<Project> projects});
+  $Res call({String id, DateTime? updatedAt, List<Project> projects});
 }
 
 /// @nodoc
@@ -48,9 +50,19 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
+    Object? updatedAt = freezed,
     Object? projects = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       projects: null == projects
           ? _value.projects
           : projects // ignore: cast_nullable_to_non_nullable
@@ -65,7 +77,7 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       __$$_UserCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Project> projects});
+  $Res call({String id, DateTime? updatedAt, List<Project> projects});
 }
 
 /// @nodoc
@@ -77,9 +89,19 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
+    Object? updatedAt = freezed,
     Object? projects = null,
   }) {
     return _then(_$_User(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       projects: null == projects
           ? _value.projects
           : projects // ignore: cast_nullable_to_non_nullable
@@ -92,16 +114,21 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class _$_User extends _User {
-  _$_User({required this.projects}) : super._();
+  _$_User({required this.id, required this.updatedAt, required this.projects})
+      : super._();
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
 
+  @override
+  final String id;
+  @override
+  final DateTime? updatedAt;
   @override
   final List<Project> projects;
 
   @override
   String toString() {
-    return 'User(projects: $projects)';
+    return 'User(id: $id, updatedAt: $updatedAt, projects: $projects)';
   }
 
   @override
@@ -109,13 +136,16 @@ class _$_User extends _User {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_User &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
             const DeepCollectionEquality().equals(other.projects, projects));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(projects));
+  int get hashCode => Object.hash(runtimeType, id, updatedAt,
+      const DeepCollectionEquality().hash(projects));
 
   @JsonKey(ignore: true)
   @override
@@ -132,11 +162,18 @@ class _$_User extends _User {
 }
 
 abstract class _User extends User {
-  factory _User({required final List<Project> projects}) = _$_User;
+  factory _User(
+      {required final String id,
+      required final DateTime? updatedAt,
+      required final List<Project> projects}) = _$_User;
   _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
+  @override
+  String get id;
+  @override
+  DateTime? get updatedAt;
   @override
   List<Project> get projects;
   @override

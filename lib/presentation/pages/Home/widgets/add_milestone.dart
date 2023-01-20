@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_personal_tracker/application/models/milestones/milestone.dart';
+import 'package:my_personal_tracker/core/utils/supabase_constant.dart';
 
 import '../../../../application/provider/providers.dart';
 
@@ -21,8 +22,6 @@ class MilestoneDialog extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userNotify = ref.read(userNotifierProvider.notifier);
-
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -80,10 +79,14 @@ class MilestoneDialog extends HookConsumerWidget {
                   if (milestone != null)
                     ElevatedButton(
                       onPressed: () async {
-                        userNotify.removeProjectMilestone(index!, milestone!);
-                        await userNotify
-                            .toFirebase()
-                            .then((value) => Navigator.pop(context));
+                        await supabase
+                            .from("milestone")
+                            .delete()
+                            .eq("id", milestone!.id!)
+                            .then((value) {
+                          ref.invalidate(userSupabaseProvider);
+                          Navigator.pop(context);
+                        });
                       },
                       child: const Text(
                         "Delete",
@@ -94,27 +97,29 @@ class MilestoneDialog extends HookConsumerWidget {
                     onPressed: () async {
                       if (_formKey.currentState!.saveAndValidate()) {
                         final milestoneLocal = Milestone(
+                          id: milestone?.id,
                           name: _formKey.currentState!.value["name"],
                           cash: double.parse(
                               _formKey.currentState!.value["cash"]),
-                          createdDate: milestone?.createdDate ?? DateTime.now(),
-                          uploadDate: milestone?.status ==
+                          createdAt: milestone?.createdAt ?? DateTime.now(),
+                          updateAt: milestone?.status ==
                                   _formKey.currentState!.value["status"]
-                              ? milestone!.uploadDate
+                              ? milestone!.updateAt
                               : DateTime.now(),
                           status: _formKey.currentState!.value["status"],
+                          projectId: milestone?.projectId,
                         );
 
-                        if (milestone != null) {
-                          userNotify.upgradeProjectMilestone(
-                            index!,
-                            mIndex!,
-                            milestoneLocal,
-                          );
-                          return userNotify
-                              .toFirebase()
-                              .then((value) => Navigator.pop(context));
-                        }
+                        // if (milestone != null) {
+                        //   userNotify.upgradeProjectMilestone(
+                        //     index!,
+                        //     mIndex!,
+                        //     milestoneLocal,
+                        //   );
+                        //   return userNotify
+                        //       .toFirebase()
+                        //       .then((value) => Navigator.pop(context));
+                        // }
 
                         Navigator.pop(
                           context,

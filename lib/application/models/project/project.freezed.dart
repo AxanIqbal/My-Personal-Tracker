@@ -20,8 +20,10 @@ Project _$ProjectFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Project {
+  int? get id => throw _privateConstructorUsedError;
   ProjectStatus get status => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
   List<Milestone> get milestones => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -34,7 +36,12 @@ abstract class $ProjectCopyWith<$Res> {
   factory $ProjectCopyWith(Project value, $Res Function(Project) then) =
       _$ProjectCopyWithImpl<$Res, Project>;
   @useResult
-  $Res call({ProjectStatus status, String name, List<Milestone> milestones});
+  $Res call(
+      {int? id,
+      ProjectStatus status,
+      String name,
+      DateTime createdAt,
+      List<Milestone> milestones});
 }
 
 /// @nodoc
@@ -50,11 +57,17 @@ class _$ProjectCopyWithImpl<$Res, $Val extends Project>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? status = null,
     Object? name = null,
+    Object? createdAt = null,
     Object? milestones = null,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -63,6 +76,10 @@ class _$ProjectCopyWithImpl<$Res, $Val extends Project>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       milestones: null == milestones
           ? _value.milestones
           : milestones // ignore: cast_nullable_to_non_nullable
@@ -78,7 +95,12 @@ abstract class _$$_ProjectCopyWith<$Res> implements $ProjectCopyWith<$Res> {
       __$$_ProjectCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({ProjectStatus status, String name, List<Milestone> milestones});
+  $Res call(
+      {int? id,
+      ProjectStatus status,
+      String name,
+      DateTime createdAt,
+      List<Milestone> milestones});
 }
 
 /// @nodoc
@@ -91,11 +113,17 @@ class __$$_ProjectCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? status = null,
     Object? name = null,
+    Object? createdAt = null,
     Object? milestones = null,
   }) {
     return _then(_$_Project(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -104,6 +132,10 @@ class __$$_ProjectCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       milestones: null == milestones
           ? _value.milestones
           : milestones // ignore: cast_nullable_to_non_nullable
@@ -117,22 +149,30 @@ class __$$_ProjectCopyWithImpl<$Res>
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class _$_Project extends _Project {
   _$_Project(
-      {required this.status, required this.name, required this.milestones})
+      {this.id,
+      required this.status,
+      required this.name,
+      required this.createdAt,
+      required this.milestones})
       : super._();
 
   factory _$_Project.fromJson(Map<String, dynamic> json) =>
       _$$_ProjectFromJson(json);
 
   @override
+  final int? id;
+  @override
   final ProjectStatus status;
   @override
   final String name;
+  @override
+  final DateTime createdAt;
   @override
   final List<Milestone> milestones;
 
   @override
   String toString() {
-    return 'Project(status: $status, name: $name, milestones: $milestones)';
+    return 'Project(id: $id, status: $status, name: $name, createdAt: $createdAt, milestones: $milestones)';
   }
 
   @override
@@ -140,15 +180,18 @@ class _$_Project extends _Project {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Project &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
             const DeepCollectionEquality()
                 .equals(other.milestones, milestones));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, status, name,
+  int get hashCode => Object.hash(runtimeType, id, status, name, createdAt,
       const DeepCollectionEquality().hash(milestones));
 
   @JsonKey(ignore: true)
@@ -167,17 +210,23 @@ class _$_Project extends _Project {
 
 abstract class _Project extends Project {
   factory _Project(
-      {required final ProjectStatus status,
+      {final int? id,
+      required final ProjectStatus status,
       required final String name,
+      required final DateTime createdAt,
       required final List<Milestone> milestones}) = _$_Project;
   _Project._() : super._();
 
   factory _Project.fromJson(Map<String, dynamic> json) = _$_Project.fromJson;
 
   @override
+  int? get id;
+  @override
   ProjectStatus get status;
   @override
   String get name;
+  @override
+  DateTime get createdAt;
   @override
   List<Milestone> get milestones;
   @override
