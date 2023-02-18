@@ -60,8 +60,7 @@ class LoginForm extends StatelessWidget {
                         } on AuthException catch (e) {
                           context.showSnackbarError(e.message);
                         } catch (e) {
-                          context
-                              .showSnackbarError("Unexpected error occurred");
+                          context.showSnackbarError("$e");
                         }
                       }
                     },
