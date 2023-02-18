@@ -48,4 +48,18 @@ extension MilestoneX on List<Milestone> {
 
     return data;
   }
+
+  double remainingMoney() {
+    double remaining = 0.0;
+    forEach(
+      (element) {
+        if (element.status == MilestoneStatus.Pending) {
+          print("remaining: $remaining and milestone to add: ${element.cash}");
+          remaining += element.cash;
+        }
+      },
+    );
+
+    return remaining;
+  }
 }

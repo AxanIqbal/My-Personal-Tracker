@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:my_personal_tracker/core/extensions/currency.dart';
+import 'package:my_personal_tracker/core/extensions/milestones.dart';
 import 'package:my_personal_tracker/core/extensions/snackbars.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -18,8 +21,13 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final remaining = useState(0.0);
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          "Total Remaining: ${remaining.value.toCompact()}",
+          style: const TextStyle(color: Colors.blue),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -80,6 +88,10 @@ class HomePage extends HookConsumerWidget {
                     return a.status.index.compareTo(b.status.index);
                   },
                 );
+                remaining.value = data.projects
+                    .expand((element) => element.milestones)
+                    .toList()
+                    .remainingMoney();
                 return ListView(
                   physics: const BouncingScrollPhysics(),
                   children: [
@@ -120,7 +132,7 @@ class HomePage extends HookConsumerWidget {
                               project.name,
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline3
+                                  .displaySmall
                                   ?.copyWith(
                                     color: projectColors[project.status],
                                   ),
@@ -129,15 +141,15 @@ class HomePage extends HookConsumerWidget {
                               children: [
                                 TableRow(children: [
                                   const Text("Total"),
-                                  Text(project.total.toString()),
+                                  Text(project.total.toCompact()),
                                 ]),
                                 TableRow(children: [
                                   const Text("Earned"),
-                                  Text(project.earned.toString()),
+                                  Text(project.earned.toCompact()),
                                 ]),
                                 TableRow(children: [
                                   const Text("Remaining"),
-                                  Text(project.remaining.toString()),
+                                  Text(project.remaining.toCompact()),
                                 ]),
                               ],
                             ),

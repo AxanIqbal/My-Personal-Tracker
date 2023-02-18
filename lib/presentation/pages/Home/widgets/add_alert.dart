@@ -32,6 +32,7 @@ class AddForm extends HookConsumerWidget {
           children: [
             TextFormField(
               initialValue: project.value.name,
+              textCapitalization: TextCapitalization.words,
               decoration: const InputDecoration(
                 label: Text("Project Name"),
               ),

@@ -33,6 +33,7 @@ class MilestoneDialog extends HookConsumerWidget {
               FormBuilderTextField(
                 name: 'name',
                 initialValue: milestone?.name,
+                textCapitalization: TextCapitalization.words,
                 decoration: const InputDecoration(
                   label: Text("Name"),
                 ),
