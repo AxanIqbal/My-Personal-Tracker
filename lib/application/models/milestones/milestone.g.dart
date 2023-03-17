@@ -8,11 +8,13 @@ part of 'milestone.dart';
 
 _$_Milestone _$$_MilestoneFromJson(Map<String, dynamic> json) => _$_Milestone(
       id: json['id'] as int?,
-      name: json['name'] as String,
+      name: json['name'] as String?,
       cash: (json['cash'] as num).toDouble(),
       createdAt: DateTime.parse(json['created_at'] as String),
       updateAt: DateTime.parse(json['update_at'] as String),
       status: $enumDecode(_$MilestoneStatusEnumMap, json['status']),
+      features:
+          (json['features'] as List<dynamic>).map((e) => e as String).toList(),
       projectId: json['project_id'] as int?,
     );
 
@@ -24,6 +26,7 @@ Map<String, dynamic> _$$_MilestoneToJson(_$_Milestone instance) =>
       'created_at': instance.createdAt.toIso8601String(),
       'update_at': instance.updateAt.toIso8601String(),
       'status': _$MilestoneStatusEnumMap[instance.status]!,
+      'features': instance.features,
       'project_id': instance.projectId,
     };
 

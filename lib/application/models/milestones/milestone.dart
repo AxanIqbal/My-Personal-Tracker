@@ -14,11 +14,12 @@ class Milestone with _$Milestone {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory Milestone({
     int? id,
-    required String name,
+    required String? name,
     required double cash,
     required DateTime createdAt,
     required DateTime updateAt,
     required MilestoneStatus status,
+    required List<String> features,
     int? projectId,
   }) = _Milestone;
 

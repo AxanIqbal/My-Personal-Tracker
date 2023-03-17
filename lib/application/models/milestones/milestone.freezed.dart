@@ -21,11 +21,12 @@ Milestone _$MilestoneFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Milestone {
   int? get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   double get cash => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get updateAt => throw _privateConstructorUsedError;
   MilestoneStatus get status => throw _privateConstructorUsedError;
+  List<String> get features => throw _privateConstructorUsedError;
   int? get projectId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,11 +42,12 @@ abstract class $MilestoneCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
-      String name,
+      String? name,
       double cash,
       DateTime createdAt,
       DateTime updateAt,
       MilestoneStatus status,
+      List<String> features,
       int? projectId});
 }
 
@@ -63,11 +65,12 @@ class _$MilestoneCopyWithImpl<$Res, $Val extends Milestone>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = null,
+    Object? name = freezed,
     Object? cash = null,
     Object? createdAt = null,
     Object? updateAt = null,
     Object? status = null,
+    Object? features = null,
     Object? projectId = freezed,
   }) {
     return _then(_value.copyWith(
@@ -75,10 +78,10 @@ class _$MilestoneCopyWithImpl<$Res, $Val extends Milestone>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      name: null == name
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       cash: null == cash
           ? _value.cash
           : cash // ignore: cast_nullable_to_non_nullable
@@ -95,6 +98,10 @@ class _$MilestoneCopyWithImpl<$Res, $Val extends Milestone>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as MilestoneStatus,
+      features: null == features
+          ? _value.features
+          : features // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       projectId: freezed == projectId
           ? _value.projectId
           : projectId // ignore: cast_nullable_to_non_nullable
@@ -112,11 +119,12 @@ abstract class _$$_MilestoneCopyWith<$Res> implements $MilestoneCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
-      String name,
+      String? name,
       double cash,
       DateTime createdAt,
       DateTime updateAt,
       MilestoneStatus status,
+      List<String> features,
       int? projectId});
 }
 
@@ -132,11 +140,12 @@ class __$$_MilestoneCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? name = null,
+    Object? name = freezed,
     Object? cash = null,
     Object? createdAt = null,
     Object? updateAt = null,
     Object? status = null,
+    Object? features = null,
     Object? projectId = freezed,
   }) {
     return _then(_$_Milestone(
@@ -144,10 +153,10 @@ class __$$_MilestoneCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      name: null == name
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       cash: null == cash
           ? _value.cash
           : cash // ignore: cast_nullable_to_non_nullable
@@ -164,6 +173,10 @@ class __$$_MilestoneCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as MilestoneStatus,
+      features: null == features
+          ? _value._features
+          : features // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       projectId: freezed == projectId
           ? _value.projectId
           : projectId // ignore: cast_nullable_to_non_nullable
@@ -183,7 +196,9 @@ class _$_Milestone implements _Milestone {
       required this.createdAt,
       required this.updateAt,
       required this.status,
-      this.projectId});
+      required final List<String> features,
+      this.projectId})
+      : _features = features;
 
   factory _$_Milestone.fromJson(Map<String, dynamic> json) =>
       _$$_MilestoneFromJson(json);
@@ -191,7 +206,7 @@ class _$_Milestone implements _Milestone {
   @override
   final int? id;
   @override
-  final String name;
+  final String? name;
   @override
   final double cash;
   @override
@@ -200,12 +215,20 @@ class _$_Milestone implements _Milestone {
   final DateTime updateAt;
   @override
   final MilestoneStatus status;
+  final List<String> _features;
+  @override
+  List<String> get features {
+    if (_features is EqualUnmodifiableListView) return _features;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_features);
+  }
+
   @override
   final int? projectId;
 
   @override
   String toString() {
-    return 'Milestone(id: $id, name: $name, cash: $cash, createdAt: $createdAt, updateAt: $updateAt, status: $status, projectId: $projectId)';
+    return 'Milestone(id: $id, name: $name, cash: $cash, createdAt: $createdAt, updateAt: $updateAt, status: $status, features: $features, projectId: $projectId)';
   }
 
   @override
@@ -221,6 +244,7 @@ class _$_Milestone implements _Milestone {
             (identical(other.updateAt, updateAt) ||
                 other.updateAt == updateAt) &&
             (identical(other.status, status) || other.status == status) &&
+            const DeepCollectionEquality().equals(other._features, _features) &&
             (identical(other.projectId, projectId) ||
                 other.projectId == projectId));
   }
@@ -228,7 +252,15 @@ class _$_Milestone implements _Milestone {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, name, cash, createdAt, updateAt, status, projectId);
+      runtimeType,
+      id,
+      name,
+      cash,
+      createdAt,
+      updateAt,
+      status,
+      const DeepCollectionEquality().hash(_features),
+      projectId);
 
   @JsonKey(ignore: true)
   @override
@@ -247,11 +279,12 @@ class _$_Milestone implements _Milestone {
 abstract class _Milestone implements Milestone {
   const factory _Milestone(
       {final int? id,
-      required final String name,
+      required final String? name,
       required final double cash,
       required final DateTime createdAt,
       required final DateTime updateAt,
       required final MilestoneStatus status,
+      required final List<String> features,
       final int? projectId}) = _$_Milestone;
 
   factory _Milestone.fromJson(Map<String, dynamic> json) =
@@ -260,7 +293,7 @@ abstract class _Milestone implements Milestone {
   @override
   int? get id;
   @override
-  String get name;
+  String? get name;
   @override
   double get cash;
   @override
@@ -269,6 +302,8 @@ abstract class _Milestone implements Milestone {
   DateTime get updateAt;
   @override
   MilestoneStatus get status;
+  @override
+  List<String> get features;
   @override
   int? get projectId;
   @override

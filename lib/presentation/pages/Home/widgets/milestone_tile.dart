@@ -22,6 +22,7 @@ class MilestoneTile extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
+      isThreeLine: true,
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -29,7 +30,25 @@ class MilestoneTile extends HookConsumerWidget {
           Text("Status: ${milestone.status.name}"),
         ],
       ),
-      title: Text(milestone.name),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: milestone.features
+            .map((e) => Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.circle,
+                      size: 10,
+                      color: milestoneColors[milestone.status],
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(e),
+                  ],
+                ))
+            .toList(),
+      ),
       selected: milestone.status != MilestoneStatus.Pending,
       selectedColor: milestoneColors[milestone.status],
       trailing: IconButton(

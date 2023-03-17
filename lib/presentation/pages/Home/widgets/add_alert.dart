@@ -68,7 +68,7 @@ class AddForm extends HookConsumerWidget {
                     .map(
                       (milestone) => DataRow(
                         cells: [
-                          DataCell(Text(milestone.name)),
+                          DataCell(Text(milestone.features.join(", "))),
                           DataCell(Text(milestone.cash.toString())),
                           DataCell(Text(milestone.status.name)),
                         ],
