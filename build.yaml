@@ -13,3 +13,6 @@ targets:
       auto_route_generator|autoRouteGenerator:
         generate_for:
           - "**/presentation/routes/**.dart"
+      riverpod_generator:
+        generate_for:
+          - "**/application/provider/**.dart"

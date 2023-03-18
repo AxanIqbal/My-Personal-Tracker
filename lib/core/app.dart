@@ -37,6 +37,16 @@ class MyApp extends StatelessWidget {
         title: "My Personal Tracker",
         theme: ThemeData(
           useMaterial3: true,
+          primarySwatch: Colors.blue,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.blue,
+            backgroundColor: Colors.white,
+            errorColor: Colors.red,
+          ),
+          dialogTheme: const DialogTheme(
+            surfaceTintColor: Colors.white,
+            backgroundColor: Colors.white,
+          ),
         ),
         debugShowCheckedModeBanner: false,
         routerDelegate: appRouter.delegate(),

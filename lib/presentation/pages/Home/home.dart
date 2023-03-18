@@ -1,19 +1,18 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_personal_tracker/core/extensions/currency.dart';
 import 'package:my_personal_tracker/core/extensions/milestones.dart';
 import 'package:my_personal_tracker/core/extensions/snackbars.dart';
+import 'package:my_personal_tracker/presentation/routes/app_router.gr.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../application/models/milestones/milestone.dart';
 import '../../../application/models/project/project.dart';
 import '../../../application/provider/providers.dart';
 import '../../../core/utils/supabase_constant.dart';
 import '../../Themes/colors.dart';
 import 'widgets/add_alert.dart';
-import 'widgets/add_milestone.dart';
 import 'widgets/bar_chart.dart';
-import 'widgets/milestone_tile.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -91,35 +90,31 @@ class HomePage extends HookConsumerWidget {
                 return a.status.index.compareTo(b.status.index);
               },
             );
-            return ListView(
-              physics: const BouncingScrollPhysics(),
+            return Column(
               children: [
                 const SizedBox(
                   height: 10,
                 ),
                 MyBarChart(projects: data.projects),
-                ...data.projects.map(
-                  (project) {
-                    project.milestones.sort(
-                      (a, b) => a.status.index.compareTo(b.status.index),
-                    );
-                    return ExpansionTile(
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: data.projects.length,
+                    itemBuilder: (context, index) => ListTile(
                       textColor: Colors.black,
-                      collapsedTextColor:
-                          project.remaining != 0.0 ? Colors.black : Colors.grey,
+                      isThreeLine: true,
                       trailing: IconButton(
                         onPressed: () async {
                           try {
-                            final data = await showDialog<Project>(
+                            final data1 = await showDialog<Project>(
                               context: context,
                               builder: (context) =>
-                                  AddForm(projectParam: project),
+                                  AddForm(projectParam: data.projects[index]),
                             );
-                            if (data != null) {
+                            if (data1 != null) {
                               await supabase
                                   .from("project")
-                                  .update(data.toJson()..remove("milestones"))
-                                  .eq("id", data.id!);
+                                  .update(data1.toJson()..remove("milestones"))
+                                  .eq("id", data1.id!);
                               ref.invalidate(userSupabaseProvider);
                             }
                           } on PostgrestException catch (e) {
@@ -129,71 +124,38 @@ class HomePage extends HookConsumerWidget {
                         icon: const Icon(Icons.edit),
                       ),
                       title: Text(
-                        project.name,
-                        style:
-                            Theme.of(context).textTheme.displaySmall?.copyWith(
-                                  color: projectColors[project.status],
-                                ),
+                        data.projects[index].name,
+                        style: Theme.of(context)
+                            .textTheme
+                            .displaySmall
+                            ?.copyWith(
+                              color: projectColors[data.projects[index].status],
+                            ),
                       ),
                       subtitle: Table(
                         children: [
                           TableRow(children: [
                             const Text("Total"),
-                            Text(project.total.toCompact()),
+                            Text(data.projects[index].total.toCompact()),
                           ]),
                           TableRow(children: [
                             const Text("Earned"),
-                            Text(project.earned.toCompact()),
+                            Text(data.projects[index].earned.toCompact()),
                           ]),
                           TableRow(children: [
                             const Text("Remaining"),
-                            Text(project.remaining.toCompact()),
+                            Text(data.projects[index].remaining.toCompact()),
                           ]),
                         ],
                       ),
-                      children: [
-                        ...project.milestones
-                            .asMap()
-                            .map(
-                              (index, milestone) => MapEntry(
-                                index,
-                                MilestoneTile(
-                                  milestone: milestone,
-                                  index: project.id!,
-                                  mIndex: index,
-                                ),
-                              ),
-                            )
-                            .values
-                            .toList(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("Add Milestone?"),
-                            IconButton(
-                              onPressed: () async {
-                                final milestone = await showDialog<Milestone>(
-                                  context: context,
-                                  builder: (context) => MilestoneDialog(
-                                    index: project.id!,
-                                  ),
-                                );
-                                if (milestone != null) {
-                                  await supabase.from("milestone").insert({
-                                    ...milestone.toJson()..remove("id"),
-                                    "project_id": project.id!,
-                                  });
-                                  ref.invalidate(userSupabaseProvider);
-                                }
-                              },
-                              icon: const Icon(Icons.add),
-                            ),
-                          ],
-                        )
-                      ],
-                    );
-                  },
-                ).toList(),
+                      onTap: () => context.pushRoute(
+                        ProjectRoute(
+                          projectId: data.projects[index].id.toString(),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
               ],
             );
           },
