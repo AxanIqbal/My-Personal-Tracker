@@ -38,18 +38,23 @@ class MilestoneDialog extends HookConsumerWidget {
                   decoration: const InputDecoration(
                     label: Text("Features"),
                   ),
-                ),
-                FormBuilderTextField(
-                  name: 'name',
-                  initialValue: milestone?.name,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: const InputDecoration(
-                    label: Text("Name"),
-                  ),
                   validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.minLength(1),
                     FormBuilderValidators.required(),
                   ]),
                 ),
+                if (milestone != null)
+                  FormBuilderTextField(
+                    name: 'name',
+                    initialValue: milestone?.name,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: const InputDecoration(
+                      label: Text("Name"),
+                    ),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                    ]),
+                  ),
                 FormBuilderTextField(
                   name: 'cash',
                   initialValue:

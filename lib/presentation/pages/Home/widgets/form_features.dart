@@ -3,6 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class FormFeatureList extends FormBuilderField<List<String>> {
   TextEditingController? controller;
+  final TextStyle? style;
 
   FormFeatureList({
     super.key,
@@ -15,6 +16,7 @@ class FormFeatureList extends FormBuilderField<List<String>> {
     super.onSaved,
     super.onReset,
     super.focusNode,
+    this.style,
     List<String>? initialValue,
     this.controller,
   }) : super(
@@ -58,6 +60,7 @@ class FormFeatureList extends FormBuilderField<List<String>> {
                   ),
                   keyboardType: TextInputType.name,
                   textCapitalization: TextCapitalization.words,
+                  style: style,
                 )
               ],
             );

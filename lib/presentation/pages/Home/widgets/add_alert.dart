@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_personal_tracker/application/models/project/project.dart';
 import 'package:my_personal_tracker/presentation/pages/Home/widgets/add_milestone.dart';
+
+import '../../../../application/provider/providers.dart';
+import '../../../../core/utils/supabase_constant.dart';
 
 class AddForm extends HookConsumerWidget {
   const AddForm({Key? key, this.projectParam}) : super(key: key);
@@ -39,6 +43,10 @@ class AddForm extends HookConsumerWidget {
               onChanged: (value) {
                 project.value = project.value.copyWith(name: value);
               },
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.minWordsCount(3),
+                FormBuilderValidators.required(),
+              ]),
             ),
             const SizedBox(height: 10),
             DropdownButton(
@@ -106,10 +114,29 @@ class AddForm extends HookConsumerWidget {
         ),
       ),
       actions: <Widget>[
+        if (projectParam != null)
+          TextButton(
+            onPressed: () async {
+              await supabase
+                  .from("project")
+                  .delete()
+                  .eq("id", projectParam!.id!)
+                  .then((value) {
+                ref.invalidate(userSupabaseProvider);
+                Navigator.pop(context);
+              });
+            },
+            child: const Text(
+              "Delete",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
         TextButton(
           child: Text(projectParam == null ? 'Add' : "Save"),
           onPressed: () {
-            Navigator.pop(context, project.value);
+            if (project.value.name != "") {
+              Navigator.pop(context, project.value);
+            }
           },
         ),
       ],

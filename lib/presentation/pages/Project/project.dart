@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:my_personal_tracker/core/extensions/currency.dart';
 
+import '../../../application/models/milestones/milestone.dart';
 import '../../../application/provider/providers.dart';
+import '../../../core/utils/supabase_constant.dart';
+import '../Home/widgets/add_milestone.dart';
 import 'widgets/milestone_tile.dart';
 
 class ProjectPage extends HookConsumerWidget {
@@ -33,6 +36,24 @@ class ProjectPage extends HookConsumerWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final milestone = await showDialog<Milestone>(
+            context: context,
+            builder: (context) => MilestoneDialog(
+              index: project.value!.id!,
+            ),
+          );
+          if (milestone != null) {
+            await supabase.from("milestone").insert({
+              ...milestone.toJson()..remove("id"),
+              "project_id": project.value!.id!,
+            });
+            ref.invalidate(userSupabaseProvider);
+          }
+        },
+        child: const Icon(Icons.add),
       ),
       body: userProvider.when(
         data: (user) {
