@@ -14,37 +14,35 @@ class ProjectPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final projectProvider = ref.watch(ProjectSupabaseProvider(projectId));
+    final userProvider = ref.watch(userSupabaseProvider);
+    final project = userProvider.whenData((value) => value.projects
+        .firstWhere((element) => element.id.toString() == projectId));
 
     return Scaffold(
       appBar: AppBar(
-        title: projectProvider.whenData((project) => Text(project.name)).value,
+        title: Text(project.value?.name ?? ""),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: projectProvider
-                .whenData(
-                  (project) => Text(
-                    project.remaining.toCompact(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(color: Colors.blue),
-                  ),
-                )
-                .value,
+            child: Text(
+              project.value?.remaining.toCompact() ?? "",
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(color: Colors.blue),
+            ),
           ),
         ],
       ),
-      body: projectProvider.when(
-        data: (project) {
-          project.milestones.sort(
+      body: userProvider.when(
+        data: (user) {
+          project.value!.milestones.sort(
             (a, b) => a.status.index.compareTo(b.status.index),
           );
           return ListView.builder(
-            itemCount: project.milestones.length,
+            itemCount: project.value!.milestones.length,
             itemBuilder: (context, index) => MilestoneTile(
-              milestone: project.milestones[index],
+              milestone: project.value!.milestones[index],
               index: index,
             ),
           );
